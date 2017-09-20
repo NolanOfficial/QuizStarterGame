@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var questionsAsked = 0
     var correctQuestions = 0
     var indexOfSelectedQuestion: Int = 0
-    let triviaQuestions = Trivia()
+    var triviaQuestions = Trivia()
     
     var gameSound: SystemSoundID = 0
     
@@ -50,9 +50,7 @@ class ViewController: UIViewController {
     }
     
     func displayQuestion() {
-        indexOfSelectedQuestion = GKRandomSource.sharedRandom().nextInt(upperBound: trivia.count)
-        let questionDictionary = trivia[indexOfSelectedQuestion]
-        questionField.text = questionDictionary["Question"]
+        questionField.text = triviaQuestions.randomFact()["Question"]
         playAgainButton.isHidden = true
     }
     
@@ -80,6 +78,7 @@ class ViewController: UIViewController {
         if (sender === optionOne &&  correctAnswer == "True") || (sender === optionTwo && correctAnswer == "False") {
             correctQuestions += 1
             questionField.text = "Correct!"
+            
         } else {
             questionField.text = "Sorry, wrong answer!"
         }
