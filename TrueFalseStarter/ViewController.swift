@@ -15,17 +15,9 @@ class ViewController: UIViewController {
     let questionsPerRound = 4
     var questionsAsked = 0
     var correctQuestions = 0
-    var indexOfSelectedQuestion: Int = 0
     var triviaQuestions = Trivia()
-    
     var gameSound: SystemSoundID = 0
     
-    let trivia: [[String : String]] = [
-        ["Question": "Only female koalas can whistle", "Answer": "False"],
-        ["Question": "Blue whales are technically whales", "Answer": "True"],
-        ["Question": "Camels are cannibalistic", "Answer": "False"],
-        ["Question": "All ducks are birds", "Answer": "True"]
-    ]
     
     @IBOutlet weak var questionField: UILabel!
     @IBOutlet weak var optionOne: UIButton!
@@ -51,11 +43,19 @@ class ViewController: UIViewController {
     }
     
     func displayQuestion() {
-        questionField.text = triviaQuestions.randomFact()["Question"]
+        var setOfQuestions = triviaQuestions.randomFact()
+        questionField.text = setOfQuestions["Question"]
+        optionOne.setTitle(setOfQuestions["Option1"], for: .normal)
+        optionTwo.setTitle(setOfQuestions["Option2"], for: .normal)
+        optionThree.setTitle(setOfQuestions["Option3"], for: .normal)
+        optionFour.setTitle(setOfQuestions["Option4"], for: .normal)
         playAgainButton.isHidden = true
         answerType.isHidden = true
+        
+        
     }
     
+
     
     func displayScore() {
         // Hide the answer buttons
@@ -66,6 +66,7 @@ class ViewController: UIViewController {
         
         // Display play again button
         playAgainButton.isHidden = false
+        playAgainButton.setTitle("Play Again?", for: .normal)
         
         
         questionField.text = "Way to go!\nYou got \(correctQuestions) out of \(questionsPerRound) correct!"
@@ -75,20 +76,26 @@ class ViewController: UIViewController {
     @IBAction func checkAnswer(_ sender: UIButton) {
         // Increment the questions asked counter
         questionsAsked += 1
+        playAgainButton.isHidden = false
+        answerType.isHidden = false
         
         
-        let correctAnswer = triviaQuestions.randomFact()["Answer"]
+        let correctAnswer = triviaQuestions.randomFact()["Option1"]
         
-        if (sender === optionOne &&  correctAnswer == "True") || (sender === optionTwo && correctAnswer == "False") {
+        if (sender === optionOne &&  correctAnswer == triviaQuestions.randomFact()["Option 1"]) || (sender === optionTwo && correctAnswer == "Option2") {
             correctQuestions += 1
             answerType.text = "Correct!"
+            playAgainButton.isHidden = false
+            answerType.isHidden = false
+            nextRound()
             
         } else {
             answerType.text = "Sorry, that's not it."
+            playAgainButton.isHidden = false
+            answerType.isHidden = false
+            nextRound()
+            
         }
-        
-        playAgainButton.isHidden = false
-        answerType.isHidden = false
         
         
         
@@ -99,9 +106,11 @@ class ViewController: UIViewController {
         if questionsAsked == questionsPerRound {
             // Game is over
             displayScore()
+            
         } else {
             // Continue game
             displayQuestion()
+            
         }
     }
     
