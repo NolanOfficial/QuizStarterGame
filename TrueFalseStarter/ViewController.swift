@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var questionsAsked = 0
     var correctQuestions = 0
     var indexOfSelectedQuestion: Int = 0
+    let triviaQuestions = Trivia()
     
     var gameSound: SystemSoundID = 0
     
