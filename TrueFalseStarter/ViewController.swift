@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var playAgainButton: UIButton!
     @IBOutlet weak var optionThree: UIButton!
     @IBOutlet weak var optionFour: UIButton!
+    @IBOutlet weak var answerType: UILabel!
     
     
 
@@ -52,7 +53,9 @@ class ViewController: UIViewController {
     func displayQuestion() {
         questionField.text = triviaQuestions.randomFact()["Question"]
         playAgainButton.isHidden = true
+        answerType.isHidden = true
     }
+    
     
     func displayScore() {
         // Hide the answer buttons
@@ -64,6 +67,7 @@ class ViewController: UIViewController {
         // Display play again button
         playAgainButton.isHidden = false
         
+        
         questionField.text = "Way to go!\nYou got \(correctQuestions) out of \(questionsPerRound) correct!"
         
     }
@@ -72,18 +76,23 @@ class ViewController: UIViewController {
         // Increment the questions asked counter
         questionsAsked += 1
         
-        let selectedQuestionDict = trivia[indexOfSelectedQuestion]
-        let correctAnswer = selectedQuestionDict["Answer"]
+        
+        let correctAnswer = triviaQuestions.randomFact()["Answer"]
         
         if (sender === optionOne &&  correctAnswer == "True") || (sender === optionTwo && correctAnswer == "False") {
             correctQuestions += 1
-            questionField.text = "Correct!"
+            answerType.text = "Correct!"
             
         } else {
-            questionField.text = "Sorry, wrong answer!"
+            answerType.text = "Sorry, that's not it."
         }
         
-        loadNextRoundWithDelay(seconds: 2)
+        playAgainButton.isHidden = false
+        answerType.isHidden = false
+        
+        
+        
+
     }
     
     func nextRound() {
